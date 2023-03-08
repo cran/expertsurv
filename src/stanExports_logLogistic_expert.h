@@ -51,20 +51,20 @@ log_h(const Eigen::Matrix<T0__, Eigen::Dynamic, 1>& t,
     try {
         {
         current_statement_begin__ = 6;
-        validate_non_negative_index("log_h", "num_elements(t)", num_elements(t));
-        Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> log_h(num_elements(t));
-        stan::math::initialize(log_h, DUMMY_VAR__);
-        stan::math::fill(log_h, DUMMY_VAR__);
+        validate_non_negative_index("log_h_rtn", "num_elements(t)", num_elements(t));
+        Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> log_h_rtn(num_elements(t));
+        stan::math::initialize(log_h_rtn, DUMMY_VAR__);
+        stan::math::fill(log_h_rtn, DUMMY_VAR__);
         current_statement_begin__ = 7;
         for (int i = 1; i <= num_elements(t); ++i) {
             current_statement_begin__ = 8;
-            stan::model::assign(log_h, 
+            stan::model::assign(log_h_rtn, 
                         stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
                         (((stan::math::log(shape) - stan::math::log(get_base1(scale, i, "scale", 1))) + ((shape - 1) * (stan::math::log(get_base1(t, i, "t", 1)) - stan::math::log(get_base1(scale, i, "scale", 1))))) - stan::math::log((1 + pow((get_base1(t, i, "t", 1) / get_base1(scale, i, "scale", 1)), shape)))), 
-                        "assigning variable log_h");
+                        "assigning variable log_h_rtn");
         }
         current_statement_begin__ = 10;
-        return stan::math::promote_scalar<fun_return_scalar_t__>(log_h);
+        return stan::math::promote_scalar<fun_return_scalar_t__>(log_h_rtn);
         }
     } catch (const std::exception& e) {
         stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -96,20 +96,20 @@ log_S(const Eigen::Matrix<T0__, Eigen::Dynamic, 1>& t,
     try {
         {
         current_statement_begin__ = 15;
-        validate_non_negative_index("log_S", "num_elements(t)", num_elements(t));
-        Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> log_S(num_elements(t));
-        stan::math::initialize(log_S, DUMMY_VAR__);
-        stan::math::fill(log_S, DUMMY_VAR__);
+        validate_non_negative_index("log_S_rtn", "num_elements(t)", num_elements(t));
+        Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> log_S_rtn(num_elements(t));
+        stan::math::initialize(log_S_rtn, DUMMY_VAR__);
+        stan::math::fill(log_S_rtn, DUMMY_VAR__);
         current_statement_begin__ = 16;
         for (int i = 1; i <= num_elements(t); ++i) {
             current_statement_begin__ = 17;
-            stan::model::assign(log_S, 
+            stan::model::assign(log_S_rtn, 
                         stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
                         -(stan::math::log((1 + pow((get_base1(t, i, "t", 1) / get_base1(scale, i, "scale", 1)), shape)))), 
-                        "assigning variable log_S");
+                        "assigning variable log_S_rtn");
         }
         current_statement_begin__ = 19;
-        return stan::math::promote_scalar<fun_return_scalar_t__>(log_S);
+        return stan::math::promote_scalar<fun_return_scalar_t__>(log_S_rtn);
         }
     } catch (const std::exception& e) {
         stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -141,14 +141,14 @@ Sind(const T0__& t,
     try {
         {
         current_statement_begin__ = 24;
-        local_scalar_t__ Sind(DUMMY_VAR__);
-        (void) Sind;  // dummy to suppress unused var warning
-        stan::math::initialize(Sind, DUMMY_VAR__);
-        stan::math::fill(Sind, DUMMY_VAR__);
+        local_scalar_t__ Sind_rtn(DUMMY_VAR__);
+        (void) Sind_rtn;  // dummy to suppress unused var warning
+        stan::math::initialize(Sind_rtn, DUMMY_VAR__);
+        stan::math::fill(Sind_rtn, DUMMY_VAR__);
         current_statement_begin__ = 25;
-        stan::math::assign(Sind, stan::math::exp(-(stan::math::log((1 + pow((t / scale), shape))))));
+        stan::math::assign(Sind_rtn, stan::math::exp(-(stan::math::log((1 + pow((t / scale), shape))))));
         current_statement_begin__ = 26;
-        return stan::math::promote_scalar<fun_return_scalar_t__>(Sind);
+        return stan::math::promote_scalar<fun_return_scalar_t__>(Sind_rtn);
         }
     } catch (const std::exception& e) {
         stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -180,10 +180,10 @@ Surv_diff(const T0__& shape,
     try {
         {
         current_statement_begin__ = 31;
-        local_scalar_t__ Surv_diff(DUMMY_VAR__);
-        (void) Surv_diff;  // dummy to suppress unused var warning
-        stan::math::initialize(Surv_diff, DUMMY_VAR__);
-        stan::math::fill(Surv_diff, DUMMY_VAR__);
+        local_scalar_t__ Surv_diff_rtn(DUMMY_VAR__);
+        (void) Surv_diff_rtn;  // dummy to suppress unused var warning
+        stan::math::initialize(Surv_diff_rtn, DUMMY_VAR__);
+        stan::math::fill(Surv_diff_rtn, DUMMY_VAR__);
         current_statement_begin__ = 32;
         local_scalar_t__ b(DUMMY_VAR__);
         (void) b;  // dummy to suppress unused var warning
@@ -192,9 +192,9 @@ Surv_diff(const T0__& shape,
         current_statement_begin__ = 33;
         stan::math::assign(b, (stan::math::pi() / shape));
         current_statement_begin__ = 34;
-        stan::math::assign(Surv_diff, (((scale_trt - scale_comp) * b) / stan::math::sin(b)));
+        stan::math::assign(Surv_diff_rtn, (((scale_trt - scale_comp) * b) / stan::math::sin(b)));
         current_statement_begin__ = 35;
-        return stan::math::promote_scalar<fun_return_scalar_t__>(Surv_diff);
+        return stan::math::promote_scalar<fun_return_scalar_t__>(Surv_diff_rtn);
         }
     } catch (const std::exception& e) {
         stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());

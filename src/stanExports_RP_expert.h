@@ -135,16 +135,16 @@ Sind(const Eigen::Matrix<T0__, Eigen::Dynamic, 1>& gamma,
         stan::math::initialize(eta, DUMMY_VAR__);
         stan::math::fill(eta, DUMMY_VAR__);
         current_statement_begin__ = 32;
-        local_scalar_t__ Sind(DUMMY_VAR__);
-        (void) Sind;  // dummy to suppress unused var warning
-        stan::math::initialize(Sind, DUMMY_VAR__);
-        stan::math::fill(Sind, DUMMY_VAR__);
+        local_scalar_t__ Sind_rtn(DUMMY_VAR__);
+        (void) Sind_rtn;  // dummy to suppress unused var warning
+        stan::math::initialize(Sind_rtn, DUMMY_VAR__);
+        stan::math::fill(Sind_rtn, DUMMY_VAR__);
         current_statement_begin__ = 34;
         stan::math::assign(eta, (multiply(B, gamma) + linpred));
         current_statement_begin__ = 35;
-        stan::math::assign(Sind, stan::math::exp(-(stan::math::exp(eta))));
+        stan::math::assign(Sind_rtn, stan::math::exp(-(stan::math::exp(eta))));
         current_statement_begin__ = 36;
-        return stan::math::promote_scalar<fun_return_scalar_t__>(Sind);
+        return stan::math::promote_scalar<fun_return_scalar_t__>(Sind_rtn);
         }
     } catch (const std::exception& e) {
         stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());

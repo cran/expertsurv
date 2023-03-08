@@ -170,8 +170,8 @@ flexsurvspline <- function (formula, data, weights, bhazard, rtrunc, subset, k =
   .hess_to_cov<-utils::getFromNamespace(".hess_to_cov", "flexsurv")
   logh<-utils::getFromNamespace("logh", "flexsurv")
   dexph<-utils::getFromNamespace("dexph", "flexsurv")
-  deriv.test<-utils::getFromNamespace("DLSsurvspline ", "flexsurv")
-  DLSsurvspline <-utils::getFromNamespace("deriv.test", "flexsurv")
+  DLSsurvspline<-utils::getFromNamespace("DLSsurvspline", "flexsurv")
+  deriv.test <-utils::getFromNamespace("deriv.test", "flexsurv")
   
   
   

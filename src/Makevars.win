@@ -9,3 +9,4 @@ PKG_LIBS = $(shell "$(R_HOME)/bin$(R_ARCH_BIN)/Rscript" -e "RcppParallel::RcppPa
 
 CXX_STD = CXX17
 
+PKG_CPPFLAGS += -D_HAS_AUTO_PTR_ETC=0

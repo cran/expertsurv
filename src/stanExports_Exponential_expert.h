@@ -50,14 +50,14 @@ log_h(const Eigen::Matrix<T0__, Eigen::Dynamic, 1>& t,
     try {
         {
         current_statement_begin__ = 6;
-        validate_non_negative_index("log_h", "num_elements(t)", num_elements(t));
-        Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> log_h(num_elements(t));
-        stan::math::initialize(log_h, DUMMY_VAR__);
-        stan::math::fill(log_h, DUMMY_VAR__);
+        validate_non_negative_index("log_h_rtn", "num_elements(t)", num_elements(t));
+        Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> log_h_rtn(num_elements(t));
+        stan::math::initialize(log_h_rtn, DUMMY_VAR__);
+        stan::math::fill(log_h_rtn, DUMMY_VAR__);
         current_statement_begin__ = 7;
-        stan::math::assign(log_h, stan::math::log(rate));
+        stan::math::assign(log_h_rtn, stan::math::log(rate));
         current_statement_begin__ = 8;
-        return stan::math::promote_scalar<fun_return_scalar_t__>(log_h);
+        return stan::math::promote_scalar<fun_return_scalar_t__>(log_h_rtn);
         }
     } catch (const std::exception& e) {
         stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -87,14 +87,14 @@ log_S(const Eigen::Matrix<T0__, Eigen::Dynamic, 1>& t,
     try {
         {
         current_statement_begin__ = 13;
-        validate_non_negative_index("log_S", "num_elements(t)", num_elements(t));
-        Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> log_S(num_elements(t));
-        stan::math::initialize(log_S, DUMMY_VAR__);
-        stan::math::fill(log_S, DUMMY_VAR__);
+        validate_non_negative_index("log_S_rtn", "num_elements(t)", num_elements(t));
+        Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> log_S_rtn(num_elements(t));
+        stan::math::initialize(log_S_rtn, DUMMY_VAR__);
+        stan::math::fill(log_S_rtn, DUMMY_VAR__);
         current_statement_begin__ = 14;
-        stan::math::assign(log_S, elt_multiply(minus(rate), t));
+        stan::math::assign(log_S_rtn, elt_multiply(minus(rate), t));
         current_statement_begin__ = 15;
-        return stan::math::promote_scalar<fun_return_scalar_t__>(log_S);
+        return stan::math::promote_scalar<fun_return_scalar_t__>(log_S_rtn);
         }
     } catch (const std::exception& e) {
         stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -124,14 +124,14 @@ log_Sind(const T0__& t,
     try {
         {
         current_statement_begin__ = 20;
-        local_scalar_t__ log_Sind(DUMMY_VAR__);
-        (void) log_Sind;  // dummy to suppress unused var warning
-        stan::math::initialize(log_Sind, DUMMY_VAR__);
-        stan::math::fill(log_Sind, DUMMY_VAR__);
+        local_scalar_t__ log_Sind_rtn(DUMMY_VAR__);
+        (void) log_Sind_rtn;  // dummy to suppress unused var warning
+        stan::math::initialize(log_Sind_rtn, DUMMY_VAR__);
+        stan::math::fill(log_Sind_rtn, DUMMY_VAR__);
         current_statement_begin__ = 21;
-        stan::math::assign(log_Sind, (-(rate) * t));
+        stan::math::assign(log_Sind_rtn, (-(rate) * t));
         current_statement_begin__ = 22;
-        return stan::math::promote_scalar<fun_return_scalar_t__>(log_Sind);
+        return stan::math::promote_scalar<fun_return_scalar_t__>(log_Sind_rtn);
         }
     } catch (const std::exception& e) {
         stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -161,14 +161,14 @@ Surv_diff(const T0__& rate_trt,
     try {
         {
         current_statement_begin__ = 27;
-        local_scalar_t__ Surv_diff(DUMMY_VAR__);
-        (void) Surv_diff;  // dummy to suppress unused var warning
-        stan::math::initialize(Surv_diff, DUMMY_VAR__);
-        stan::math::fill(Surv_diff, DUMMY_VAR__);
+        local_scalar_t__ Surv_diff_rtn(DUMMY_VAR__);
+        (void) Surv_diff_rtn;  // dummy to suppress unused var warning
+        stan::math::initialize(Surv_diff_rtn, DUMMY_VAR__);
+        stan::math::fill(Surv_diff_rtn, DUMMY_VAR__);
         current_statement_begin__ = 28;
-        stan::math::assign(Surv_diff, ((1 / rate_trt) - (1 / rate_comp)));
+        stan::math::assign(Surv_diff_rtn, ((1 / rate_trt) - (1 / rate_comp)));
         current_statement_begin__ = 29;
-        return stan::math::promote_scalar<fun_return_scalar_t__>(Surv_diff);
+        return stan::math::promote_scalar<fun_return_scalar_t__>(Surv_diff_rtn);
         }
     } catch (const std::exception& e) {
         stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
