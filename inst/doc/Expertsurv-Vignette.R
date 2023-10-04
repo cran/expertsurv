@@ -46,14 +46,14 @@ timepoint_expert <- 14
 # timepoint_expert <- c(timepoint_expert,18)
 
 
-## ----echo = FALSE, fig.cap = "Expert prior distributions", out.width="100%"----
+## ----echo = FALSE, fig.cap = "Expert prior distributions", out.width="75%"----
 knitr::include_graphics("plots/Vignette_Example_1_Expert_Opinion.png")
 
 
-## ----echo = FALSE, fig.cap = "Model Comparison", out.width="100%"-------------
+## ----echo = FALSE, fig.cap = "Model Comparison", out.width="75%"--------------
 knitr::include_graphics("plots/Vignette_Example_1_DIC.png")
 
-## ----echo = FALSE, fig.cap = "Survival function with Expert prior", out.width="100%"----
+## ----echo = FALSE, fig.cap = "Survival function with Expert prior", out.width="75%"----
 knitr::include_graphics("plots/Vignette_Example_1.png")
 
 ## -----------------------------------------------------------------------------
@@ -62,9 +62,9 @@ knitr::include_graphics("plots/Vignette_Example_1.png")
 unique(data$arm)
 
 
-## ----echo = FALSE, fig.cap = "Survival function with Expert prior (left) and Vague prior (right)", out.width="100%"----
+## ----echo = FALSE, fig.cap = "Survival function with Expert prior (left) and Vague prior (right)", out.width="75%"----
 knitr::include_graphics("plots/Vignette_Example_2.png")
 
-## ----echo = FALSE, fig.cap = "Survival difference", out.width="100%"----------
+## ----echo = FALSE, fig.cap = "Survival difference", out.width="75%"-----------
 knitr::include_graphics("plots/Vignette_Example_3.png")
 

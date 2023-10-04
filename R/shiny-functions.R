@@ -165,7 +165,7 @@ return_pooled_info <- function(input_mat, St_indic = 1,dist = "best", mode =NULL
 #' Click "Download R objects" to download the ``expertsurv`` object generated from the analysis. 
 #' Click "Download report" to generate a report including plots and parameter values for the parametric survival models. 
 #' 
-#'
+#' For detailed instructions use \code{browseVignettes("expertsurv")}
 #'
 #' @author Philip Cooney <phcooney@@tcd.ie>
 #' @examples

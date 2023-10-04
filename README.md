@@ -322,7 +322,7 @@ Because the analysis is done in JAGS and Stan we can leverage the
 `ggmcmc` package:
 
     #For Stan Models # Log-Normal, RP, Exponential, Weibull
-    ggmcmc(ggs(as.mcmc(example1$models$`Gen. Gamma`)), file = "Gengamma.pdf")
+    ggmcmc(ggs(example1$models$`Exponential`), file = "Exponential.pdf")
 
     #For JAGS Models # Gamma, Gompertz, Generalized Gamma
     ggmcmc(ggs(as.mcmc(example1$models$`Gamma`)), file = "Gamma.pdf")
