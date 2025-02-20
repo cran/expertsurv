@@ -3,7 +3,7 @@
 #' Tests the linear assumptions for the parametric model
 #' 
 #' 
-#' @param fit an object of class survHE
+#' @param fit an object of class expertsurv
 #' @param mod index or name of a model in fit. Defaults to 1.
 #' @param label_plot if TRUE, labels assumptions. Defaults to FALSE.
 #' @param \dots further arguments, passed on to points()
@@ -19,7 +19,7 @@ test.linear.assumptions <- function(fit, mod = 1, label_plot = FALSE, ...) {
   if(is.character(mod)) stopifnot(mod %in% names(fit$models))
   
   m <- fit$models[[mod]]
-  dist <- tolower(ifelse(fit$method == "hmc", m@model_name, m$dlist$name))
+  dist <- tolower(ifelse(fit$method == "bayes", m@model_name, m$dlist$name))
   
   stopifnot(dist %in% c("exp", "exponential", "weibull", "weibull.quiet", "weibullaf", "weibullph",
                         "llogis", "loglogistic", "lognormal", "lnorm", "gompertz"))

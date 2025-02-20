@@ -16,36 +16,43 @@
 #' @references Baio (2020). survHE
 #' @keywords MLE
 #' @noRd 
-make_sim_mle <- function(m,t,X,nsim,newdata,dist,summary_stat,...) {
-  # Simulates from the distribution of the model parameters - takes 100000 bootstrap samples
-  nboot=100000
-  B=ifelse(nsim<nboot,nboot,nsim)
-  if(is.null(newdata)) {
-    #####X=X %>% as_tibble()
-    # NB: 'flexsurv' needs to exclude the intercept
-    if(grep("Intercept",colnames(X))>0) {
-      # If the intercept is part of the design matrix X then remove it (to make normboot work!)
-      X=matrix(X[,-grep("Intercept",colnames(X))],nrow=nrow(X))
-    } 
-    # If X has only one row, needs to create a list, with length equal to the number of profiles (=nrow(X))
-    if(nrow(X)==1) {
-      sim=list(flexsurv::normboot.flexsurvreg(m,B=B,X=as.matrix(X)))
-    } else {
-      # Otherwise normboot will take care of it with the proper length for the automatically created list
-      sim=flexsurv::normboot.flexsurvreg(m,B=B,X=as.matrix(X))
-    }
-  } else {
-    # If there are newdata, then create the list of sims using it
-    sim <- lapply(1:nrow(X),function(i) flexsurv::normboot.flexsurvreg(m,B=B,newdata=newdata[[i]]))
+make_sim_mle <- function (m, t, X, nsim, newdata, dist, summary_stat, ...){
+  nboot = 1e+05
+  B = ifelse(nsim < nboot, nboot, nsim)
+  if(nsim == 1){
+    mle_val = TRUE
+  }else{
+    mle_val = FALSE
+    
   }
-  # Then if 'nsim'=1, then take the average over the bootstrap samples. 
-  if(nsim==1) {
-    sim=lapply(sim,function(x) x %>% tibble::as_tibble() %>% dplyr::summarise_all(summary_stat) %>% as.matrix(.,ncol=ncol(X)))
-  } 
-  # If nsim<=5000 (number of bootstrap samples), then samples only 'nsim' of them
-  if(nsim>1 & nsim<nboot) {
-    sim=lapply(sim,function(x) x %>% tibble::as_tibble() %>% dplyr::sample_n(ifelse(nsim<nboot,nsim,B),replace=FALSE) %>% 
-                 as.matrix(.,nrow=nsim,ncol=ncol(X)))
+  if (is.null(newdata)) {
+    if (grep("Intercept", colnames(X)) > 0) {
+      X = matrix(X[, -grep("Intercept", colnames(X))], 
+                 nrow = nrow(X))
+    }
+    if (nrow(X) == 1) {
+      # mat_eval <- matrix(m$res[,"est"],nrow = 1)
+      # colnames(mat_eval) <- rownames(m$res)
+      # sim = list(mat_eval)
+      sim=list(normboot.flexsurvreg(m,B=B,X=as.matrix(X), MLE = mle_val))
+    }
+    else {
+      sim = normboot.flexsurvreg(m, B = B, X = as.matrix(X), MLE = mle_val)
+    }
+  }
+  else {
+    sim <- lapply(1:nrow(X), function(i) normboot.flexsurvreg(m, 
+                                                              B = B, newdata = newdata[[i]]))
+  }
+  if (nsim == 1) {
+    sim = lapply(sim, function(x) x %>% tibble::as_tibble() %>% 
+                   dplyr::summarise_all(summary_stat) %>% as.matrix(., 
+                                                                    ncol = ncol(X)))
+  }
+  if (nsim > 1 & nsim < nboot) {
+    sim = lapply(sim, function(x) x %>% tibble::as_tibble() %>% 
+                   dplyr::sample_n(ifelse(nsim < nboot, nsim, B), replace = FALSE) %>% 
+                   as.matrix(., nrow = nsim, ncol = ncol(X)))
   }
   return(sim)
 }
@@ -64,7 +71,7 @@ make_sim_mle <- function(m,t,X,nsim,newdata,dist,summary_stat,...) {
 #' @references Baio (2020). survHE
 #' @keywords HMC Exponential
 #' @noRd 
-rescale_hmc_exp <- function(m,X,linpred){
+rescale_bayes_exp <- function(m,X,linpred){
   # Rescales the original simulations to the list sim to be used by 'make.surv'
   # Exponential distribution
   sim <- as.matrix(exp(linpred)) # exp(rstan::extract(m)$beta %*% t(X)); 
@@ -85,7 +92,7 @@ rescale_hmc_exp <- function(m,X,linpred){
 #' @references Baio (2020). survHE
 #' @keywords HMC Weibull AFT
 #' @noRd 
-rescale_hmc_wei <- function(m,X,linpred){
+rescale_bayes_wei <- function(m,X,linpred){
   # Rescales the original simulations to the list sim to be used by 'make.surv'
   # Weibull distribution
   shape <- as.numeric(rstan::extract(m)$alpha)
@@ -108,7 +115,7 @@ rescale_hmc_wei <- function(m,X,linpred){
 #' @references Baio (2020). survHE
 #' @keywords HMC Weibull PH
 #' @noRd 
-rescale_hmc_wph <- function(m,X,linpred){
+rescale_bayes_wph <- function(m,X,linpred){
   # Rescales the original simulations to the list sim to be used by 'make.surv'
   # Weibull PH distribution
   shape <- as.numeric(rstan::extract(m)$alpha)
@@ -135,7 +142,7 @@ rescale_hmc_wph <- function(m,X,linpred){
 #' @references Baio (2020). survHE
 #' @keywords HMC Generalised F
 #' @noRd 
-rescale_hmc_gef <- function(m,X,linpred){
+rescale_bayes_gef <- function(m,X,linpred){
   # Rescales the original simulations to the list sim to be used by 'make.surv'
   # Generalised F distribution
   Q <- as.numeric(rstan::extract(m)$Q)
@@ -161,7 +168,7 @@ rescale_hmc_gef <- function(m,X,linpred){
 #' @references Baio (2020). survHE
 #' @keywords HMC logNormal
 #' @noRd 
-rescale_hmc_lno <- function(m,X,linpred){
+rescale_bayes_lno <- function(m,X,linpred){
   # Rescales the original simulations to the list sim to be used by 'make.surv'
   # logNormal distribution
   sdlog <- as.numeric(rstan::extract(m)$alpha)
@@ -184,7 +191,7 @@ rescale_hmc_lno <- function(m,X,linpred){
 #' @references Baio (2020). survHE
 #' @keywords HMC logLogistic
 #' @noRd 
-rescale_hmc_llo <- function(m,X,linpred){
+rescale_bayes_llo <- function(m,X,linpred){
   # Rescales the original simulations to the list sim to be used by 'make.surv'
   # logNormal distribution
   shape <- as.numeric(rstan::extract(m)$alpha)
@@ -207,7 +214,7 @@ rescale_hmc_llo <- function(m,X,linpred){
 #' @references Baio (2020). survHE
 #' @keywords HMC Royston-Parmar splines
 #' @noRd 
-rescale_hmc_rps <- function(m,X,linpred) {
+rescale_bayes_rps <- function(m,X,linpred) {
   # Rescales the original simulations to the list sim to be used by 'make.surv'
   # RPS
   gamma <- rstan::extract(m)$gamma
@@ -275,7 +282,6 @@ rescale.inla <- function(linpred,alpha,distr) {
 #' @param nsim The number of simulations included
 #' @param dist The abbreviated name of the underlying distribution
 #' @param t The vector of times to be used in the x-axis
-#' @import flexsurv
 #' @return \item{mat}{A matrix of simulated values for the survival curves}
 #' @author Gianluca Baio
 #' @seealso make.surv
@@ -293,15 +299,22 @@ compute_surv_curve <- function(sim,exArgs,nsim,dist,t,method,X) {
     if(exists("timescale",where=exArgs)) {timescale=exArgs$timescale} else {timescale="log"}
     if(exists("log",where=exArgs)) {log=exArgs$log} else {log=FALSE}
     
-    if(method=="hmc") {
+    if(method=="bayes") {
       knots <- exArgs$data.stan$knots
+      # Offset doesn't work anymore
+      sim <- lapply(sim, function(mat) {
+        df <- as.data.frame(mat)
+        df$gamma1 <- df$gamma1 + df$offset
+        df <- df[, !names(df) %in% "offset"]
+        return(df)
+      })
+      
       mat <- lapply(sim,function(x) {
         gamma=as_tibble(x) %>% select(contains("gamma"))
-        offset=as_tibble(x) %>% select(offset)
         matrix(
           unlist(
             lapply(1:nsim,function(i){
-              1-do.call(flexsurv::psurvspline,args=list(
+              1-do.call(psurvspline,args=list(
                 q=t,
                 gamma=as.numeric(gamma %>% slice(i)),
                 beta=0,
@@ -309,7 +322,6 @@ compute_surv_curve <- function(sim,exArgs,nsim,dist,t,method,X) {
                 knots=knots,
                 scale=scale,
                 timescale=timescale,
-                offset=as.numeric(offset%>% slice(i)),
                 log=log
               ))
             })
@@ -324,7 +336,7 @@ compute_surv_curve <- function(sim,exArgs,nsim,dist,t,method,X) {
       } else {
         X=X %>% as_tibble()
       }
-###      if(exists("offset",where=exArgs)) {offset=exArgs$offset} else {offset=0}
+      ###      if(exists("offset",where=exArgs)) {offset=exArgs$offset} else {offset=0}
       mat=lapply(sim,function(x) {
         gamma=as_tibble(x) %>% select(contains("gamma"))
         matrix(unlist(
@@ -341,7 +353,7 @@ compute_surv_curve <- function(sim,exArgs,nsim,dist,t,method,X) {
               log=log
             ))
           })
-          ),nrow=length(t),ncol=nsim,byrow=FALSE
+        ),nrow=length(t),ncol=nsim,byrow=FALSE
         )
       })
     }
@@ -358,7 +370,7 @@ compute_surv_curve <- function(sim,exArgs,nsim,dist,t,method,X) {
   }
   for (i in 1:length(mat)){colnames(mat[[i]])=paste0("S_",1:nsim)}
   mat <- mat %>% lapply(function(x) bind_cols(tibble(t=t),as_tibble(x)))
-
+  
   return(mat)
 }
 
@@ -412,11 +424,6 @@ args_surv <- function() {
 #' the survival curves}.
 #' @note Something will go here
 #' @author Gianluca Baio
-#' 
-#' @import dplyr
-#' @import tibble
-#' @import stats
-#' @import tidyselect
 #' @seealso make.surv
 #' @references Baio (2020). survHE
 #' @keywords Parametric survival models
